@@ -1,34 +1,28 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
 ##################
 #   python 3.7   #
 ##################
 
-from database import init_db, session
+from database import session
+from controller import add_articles
+from sites.aeon import aeon_rss
 from models import Article
 
-def show_tables():
-    queries = session.query(Article)
-    entries = [dict(
-        id=q.id,
-        name=q.name,
-        title=q.title,
-        link=q.link,
-        published=q.published,
-        tags=q.tags,
-        rank=q.rank
-        ) for q in queries]
-    print(entries)
-
-def delete_entry(id):
-    session.query(Article).filter(Article.id==id).delete()
-    session.commit()
-    print("deleted")
-
 def main():
-    init_db()
-    # do somethings
+    target_sites = [aeon_rss("https://aeon.co/feed.rss"),]
+    total_articles_count = 0
+
+    for site in target_sites:
+        counts = add_articles(site)
+        total_articles_count += counts
+
+    print("\n\n**JOB DONE!**")
+    print(total_articles_count)
+
     session.close()
+    
+    return
 
 if __name__ == "__main__":
     main()

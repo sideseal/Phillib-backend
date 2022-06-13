@@ -1,11 +1,11 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
 ##################
 #   python 3.7   #
 ##################
 
 from sqlalchemy import Column, String, Integer
-from database import Base
+from database import Base, session
 
 class Article(Base):
     __tablename__ = "Articles"
@@ -29,7 +29,7 @@ class Article(Base):
 
     def __repr__(self):
         return "<Article('%s','%s','%s','%s','%s','%s','%s')>" % (
-            self.id,
+            str(self.id),
             self.name,
             self.title,
             self.link,
@@ -40,6 +40,21 @@ class Article(Base):
 
     def as_dict(self):
         return {x.name: getattr(self, x.name) for x in self.__table__.columns}
+
+    @classmethod
+    def get_or_create(cls, id, name, title, link, published, tags, rank):
+        exists = session.query(Article.id).filter_by(link=link).scalar() is not None
+        if exists:
+            return session.query(Article).filter_by(link=link).first()
+        return cls(
+            id=id,
+            name=name,
+            title=title,
+            link=link,
+            published=published,
+            tags=tags,
+            rank=rank,
+        )
 
 class Comment(Base):
     __tablename__ = "Comments"
@@ -58,8 +73,8 @@ class Comment(Base):
 
     def __repr__(self):
         return "<Comment('%s','%s','%s','%s')>" % (
-            self.article_id,
-            self.user_id,
+            str(self.article_id),
+            str(self.user_id),
             self.comment,
             self.create_at,
         )
