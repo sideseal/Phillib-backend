@@ -11,6 +11,7 @@ from sqlalchemy.ext.declarative import declarative_base
 
 engine = create_engine('sqlite:////home/ec2-user/phillib/database/phillib.db')
 Session = sessionmaker(bind=engine)
+
 session = Session()
 Base = declarative_base()
 
