@@ -4,7 +4,6 @@
 #   python 3.7   #
 ##################
 
-from database import init_db
 from database import session
 from models import Article
 
@@ -14,7 +13,7 @@ def delete_entry(idx):
     session.commit()
     print("deleted")
 
-def check_article_exists(article_link):
+def check_article_not_exists(article_link):
     exists = session.query(Article.id).filter_by(link=article_link).scalar() is not None
     if not exists:
         return True
@@ -22,37 +21,38 @@ def check_article_exists(article_link):
         return False
 
 # 모델의 classmethod도 컨트롤러에 포함을 시켜야 할까?
-def add_articles(site):
+def add_articles(target_sites):
     new_articles_count = 0
     status = False
 
-    for article in site:
-        try:
-            entry = Article.get_or_create(
-                id=article["id"],
-                name=article["name"],
-                title=article["title"],
-                link=article["link"],
-                published=article["published"],
-                tags=article["tags"],
-                rank=article["rank"],
-            )
+    try:
+        for articles in target_sites:
+            for article in articles:
+                entry = Article.get_or_create(
+                            id=article["id"],
+                            name=article["name"],
+                            title=article["title"],
+                            link=article["link"],
+                            published=article["published"],
+                            tags=article["tags"],
+                            rank=article["rank"],
+                        )
 
-            if entry not in session:
-                session.add(entry)
-                new_articles_count += 1
+                if entry not in session:
+                    session.add(entry)
+                    new_articles_count += 1
 
-            status = True
-            session.commit()
+        session.commit()
+        status = True
 
-        except Exception as e:
-            status = False
-            session.rollback()
+    except Exception as e:
+        session.rollback()
+        status = False
+        print("\nController: Failed to commit article. See exception:\n", e)
 
-            print("\nController: Failed to commit article. See exception:\n", e)
-            return new_articles_count, status
-
-    return new_articles_count, status
+    finally:
+        session.close()
+        return new_articles_count, status
 
 def get_all_articles():
     results = (
