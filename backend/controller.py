@@ -13,9 +13,9 @@ def delete_entry(idx):
     session.commit()
     print("deleted")
 
-def check_article_not_exists(article_link):
+def check_article_exists(article_link):
     exists = session.query(Article.id).filter_by(link=article_link).scalar() is not None
-    if not exists:
+    if exists:
         return True
     else:
         return False
