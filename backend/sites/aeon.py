@@ -9,7 +9,7 @@ import re
 import urllib.request
 import xml.etree.ElementTree as ET
 from datetime import datetime, date
-from controller import check_article_not_exists
+from controller import check_article_exists
 from functions.tagging import tagging
 from functions.print_process import print_process
 
@@ -56,8 +56,8 @@ def aeon_rss(url):
             rank = 0
 
             print_process(f"Checking article: {link}...", 2)
-            
-            if check_article_not_exists:
+
+            if not check_article_exists(link):
                 article = {
                     "id": id,
                     "name": name,
