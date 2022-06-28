@@ -20,7 +20,7 @@ def show_all_articles():
     return {"articles": get_all_articles()}
 
 @app.get("/test/{test_id}")
-def test_get(test_id : int):
+def test_get(test_id: int):
     return {"test_id": test_id}
 
 #def serve():
@@ -30,6 +30,8 @@ if __name__=="__main__":
     startup()
     uvicorn.run("server:app",
                 host=APP_HOST_ADDRESS,
-                port=APP_PORT,
+                # port=APP_PORT,
                 reload=True,
+                ssl_keyfile="./key.pem",
+                ssl_certfile="./cert.pem",
                 )

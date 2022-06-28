@@ -55,7 +55,7 @@ def aeon_rss(url):
             tags = tagging(get_content_text(link))
             rank = 0
 
-            print_process(f"Checking article: {link}...", 2)
+            #print_process(f"Checking article: {link}...", 2)
 
             if not check_article_exists(link):
                 article = {
