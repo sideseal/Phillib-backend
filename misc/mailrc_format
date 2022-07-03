@@ -1,0 +1,12 @@
+# You need to set up `/etc/mail.rc` as follows:
+
+set smtp=smtp.naver.com:587
+set smtp-auth=login
+set smtp-auth-user=<your@email.address>
+set smtp-auth-password=<your email password>
+set smtp-use-starttls
+set ssl-verify=ignore
+set nss-config-dir=/etc/pki/nssdb/
+set from=<your@email.address>
+
+# Just change `<your@email.address>` & `<your email password>` above to your information.
