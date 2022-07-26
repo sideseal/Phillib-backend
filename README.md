@@ -6,5 +6,4 @@ Using external libraries:
 * Linux: mailx, certbot, nginx
 
 Python version: 3.7.10  
-
 Server: Amazon Lightsail Linux2
