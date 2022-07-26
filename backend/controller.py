@@ -28,7 +28,20 @@ def add_articles(target_sites):
     try:
         for articles in target_sites:
             for article in articles:
-                entry = Article.get_or_create(
+#                entry = Article.get_or_create(
+#                            id=article["id"],
+#                            name=article["name"],
+#                            title=article["title"],
+#                            link=article["link"],
+#                            published=article["published"],
+#                            tags=article["tags"],
+#                            rank=article["rank"],
+#                        )
+#
+#                if entry not in session:
+#                    session.add(entry)
+                    session.add(
+                        Article(
                             id=article["id"],
                             name=article["name"],
                             title=article["title"],
@@ -37,9 +50,7 @@ def add_articles(target_sites):
                             tags=article["tags"],
                             rank=article["rank"],
                         )
-
-                if entry not in session:
-                    session.add(entry)
+                    )
                     new_articles_count += 1
 
         session.commit()
