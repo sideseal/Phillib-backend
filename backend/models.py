@@ -41,20 +41,20 @@ class Article(Base):
     def as_dict(self):
         return {x.name: getattr(self, x.name) for x in self.__table__.columns}
 
-    @classmethod
-    def get_or_create(cls, id, name, title, link, published, tags, rank):
-        exists = session.query(Article.id).filter_by(link=link).scalar() is not None
-        if exists:
-            return session.query(Article).filter_by(link=link).first()
-        return cls(
-            id=id,
-            name=name,
-            title=title,
-            link=link,
-            published=published,
-            tags=tags,
-            rank=rank,
-        )
+#    @classmethod
+#    def get_or_create(cls, id, name, title, link, published, tags, rank):
+#        exists = session.query(Article.id).filter_by(link=link).scalar() is not None
+#        if exists:
+#            return session.query(Article).filter_by(link=link).first()
+#        return cls(
+#            id=id,
+#            name=name,
+#            title=title,
+#            link=link,
+#            published=published,
+#            tags=tags,
+#            rank=rank,
+#        )
 
 class Comment(Base):
     __tablename__ = "Comments"
